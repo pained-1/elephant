@@ -72,7 +72,8 @@ def handle_dialog(req, res):
             ]
         }
         # Заполняем текст ответа
-        res['response']['text'] = 'Привет! Купи слона!'
+        res['response']['text'] = ('Привет!  Купи слона! '
+                          'Здесь ты можешь попровать общаться со мной и не покупать слона, но у тебя это не удасться)')
         # Получим подсказки
         res['response']['buttons'] = get_suggests(user_id)
         return
@@ -85,6 +86,9 @@ def handle_dialog(req, res):
     # Если он написал 'ладно', 'куплю', 'покупаю', 'хорошо',
     # то мы считаем, что пользователь согласился.
     # Подумайте, всё ли в этом фрагменте написано "красиво"?
+    if req['request']['original_utterance'].lower() in ['помощь', "что ты умеешь?"]:
+        res['response']['text'] = 'я могу уговорить купить вас слона, общайтесь со мной как обычно и все!'
+        return
     if req['request']['original_utterance'].lower() in [
         'ладно',
         'куплю',
@@ -131,4 +135,4 @@ def get_suggests(user_id):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
